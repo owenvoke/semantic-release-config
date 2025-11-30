@@ -56,7 +56,7 @@ export default {
                             {
                                 'type': 'docs',
                                 'section': 'Docs',
-                                'hidden': false,
+                                'hidden': true,
                             },
                             {
                                 'type': 'feat',
