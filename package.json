@@ -1,0 +1,35 @@
+{
+    "name": "@owenvoke/semantic-release-config",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "Owen Voke's config for semantic-release.",
+    "author": "Owen Voke <development@voke.dev>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/owenvoke/semantic-release-config.git"
+    },
+    "bugs": {
+        "url": "https://github.com/owenvoke/semantic-release-config/issues"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "main": ".releaserc.mjs",
+    "files": [
+        ".releaserc.mjs"
+    ],
+    "dependencies": {
+        "@semantic-release/commit-analyzer": "^13.0.1",
+        "@semantic-release/release-notes-generator": "^14.1.0",
+        "conventional-changelog-angular": "^8.0.0",
+        "conventional-changelog-conventionalcommits": "^9.1.0",
+        "semantic-release-export-data": "^1.1.0"
+    },
+    "peerDependencies": {
+        "semantic-release": ">=24.2.0"
+    },
+    "devDependencies": {
+        "semantic-release": "^24.2.9"
+    }
+}
