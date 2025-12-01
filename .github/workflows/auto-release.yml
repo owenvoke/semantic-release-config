@@ -32,7 +32,7 @@ jobs:
         run: npm install -g semantic-release
 
       - name: Package npm tarball
-        run: npm pack | npm install -
+        run: npm pack | npm install -g -
 
       - name: Resolve version
         id: get-next-version
