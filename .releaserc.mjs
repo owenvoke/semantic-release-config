@@ -49,6 +49,16 @@ export default {
                                 'hidden': false,
                             },
                             {
+                                'type': 'chore',
+                                'scope': 'deps',
+                                'hidden': true,
+                            },
+                            {
+                                'type': 'chore',
+                                'scope': 'deps-dev',
+                                'hidden': true,
+                            },
+                            {
                                 'type': 'ci',
                                 'section': 'CI/CD',
                                 'hidden': true,
