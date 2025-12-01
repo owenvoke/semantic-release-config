@@ -33,7 +33,7 @@ jobs:
         run: npm pack
 
       - name: Install required dependencies
-        run: npm install -g semantic-release ${{ github.workspace }}
+        run: npm install -g semantic-release "./owenvoke-semantic-release-config-*.tar.gz"
 
       - name: Resolve version
         id: get-next-version
