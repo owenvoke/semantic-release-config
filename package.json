@@ -1,7 +1,6 @@
 {
     "name": "@owenvoke/semantic-release-config",
     "type": "module",
-    "version": "1.0.1",
     "description": "Owen Voke's config for semantic-release.",
     "author": "Owen Voke <development@voke.dev>",
     "license": "MIT",
