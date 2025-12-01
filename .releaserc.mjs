@@ -45,11 +45,6 @@ export default {
                             },
                             {
                                 'type': 'chore',
-                                'section': 'Other',
-                                'hidden': false,
-                            },
-                            {
-                                'type': 'chore',
                                 'scope': 'deps',
                                 'hidden': true,
                             },
@@ -57,6 +52,11 @@ export default {
                                 'type': 'chore',
                                 'scope': 'deps-dev',
                                 'hidden': true,
+                            },
+                            {
+                                'type': 'chore',
+                                'section': 'Other',
+                                'hidden': false,
                             },
                             {
                                 'type': 'ci',
