@@ -7,6 +7,8 @@
 This shareable configuration uses the following plugins:
 
 - [`@semantic-release/commit-analyzer`](https://github.com/semantic-release/commit-analyzer)
+- [`@semantic-release/release-notes-generator`](https://github.com/semantic-release/release-notes-generator)
+- [`semantic-release-export-data`](https://github.com/felipecrs/semantic-release-export-data)
 
 ## Install
 
