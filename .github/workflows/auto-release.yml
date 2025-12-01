@@ -28,11 +28,11 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Package npm tarball
-        run: npm pack
-
       - name: Install required dependencies
-        run: npm install -g semantic-release "${{ github.workspace }}/owenvoke-semantic-release-config-*.tgz"
+        run: npm install -g semantic-release
+
+      - name: Package npm tarball
+        run: npm pack | npm install -
 
       - name: Resolve version
         id: get-next-version
