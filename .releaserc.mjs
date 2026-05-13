@@ -101,6 +101,11 @@ export default {
                                 'section': 'Tests',
                                 'hidden': true,
                             },
+                            {
+                                'type': 'tests',
+                                'section': 'Tests',
+                                'hidden': true,
+                            },
                         ],
                 },
             },
