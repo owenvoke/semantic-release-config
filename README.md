@@ -33,3 +33,5 @@ This shareable config is based on the [Conventional Commits preset](https://www.
 - The `chore` type is counted as a patch release.
   - This excludes the `deps` and `deps-dev` scopes to prevent releases for every Dependabot update.
 - The `refactor` and `style` types are counted as a patch release.
+- Breaking changes on a `0.x` version are counted as a minor release (e.g. `0.3.1` → `0.4.0`).
+  - To release `1.0.0`, tag the release manually.
