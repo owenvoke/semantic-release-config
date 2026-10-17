@@ -28,7 +28,7 @@ The shareable config can be configured in the [**semantic release** configuratio
 
 ## Configuration
 
-This shareable config is based on the [Angular preset](https://www.npmjs.com/package/conventional-changelog-angular), with the following changes:
+This shareable config is based on the [Conventional Commits preset](https://www.npmjs.com/package/conventional-changelog-conventionalcommits), with the following changes:
 
 - The `chore` type is counted as a patch release.
   - This excludes the `deps` and `deps-dev` scopes to prevent releases for every Dependabot update.
