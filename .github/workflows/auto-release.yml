@@ -28,17 +28,14 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Install required dependencies
-        run: npm install -g semantic-release @owenvoke/semantic-release-config
-
-      - name: Install local dependencies
+      - name: Install dependencies
         run: npm ci
 
       - name: Resolve version
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release -e @owenvoke/semantic-release-config --dry-run
+        run: npx semantic-release --dry-run
 
   release-draft:
     name: Draft
