@@ -4,7 +4,7 @@ export default {
         [
             '@semantic-release/commit-analyzer',
             {
-                'preset': 'angular',
+                'preset': 'conventionalcommits',
                 'releaseRules': [
                     {
                         'type': 'chore',
