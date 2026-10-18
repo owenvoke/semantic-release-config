@@ -26,6 +26,38 @@ The shareable config can be configured in the [**semantic release** configuratio
 }
 ```
 
+## Reusable workflow
+
+This repository also provides a reusable GitHub Actions workflow. It works out the next version from your commits using this config, then creates a draft GitHub release with the generated release notes. `0.x` releases are marked as pre-releases. The repository doesn't need Node.js or `semantic-release` installed, so it works for any language.
+
+```yaml
+name: Auto-Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    uses: owenvoke/semantic-release-config/.github/workflows/release.yml@main
+```
+
+To lock to a specific version, replace `@main` with a release tag (e.g. `@v1.3.0`).
+
+Publishing the draft release creates the tag, which can then trigger any publishing workflows (e.g. `on: release: types: [published]`).
+
+| Input                  | Default  | Description                                                                         |
+|------------------------|----------|-------------------------------------------------------------------------------------|
+| `node-version`         | `lts/*`  | The Node.js version used to run `semantic-release`.                                 |
+| `config-version`       | `latest` | The version of `@owenvoke/semantic-release-config` to use.                          |
+| `install-dependencies` | `false`  | Run `npm ci` first (needed if the repository's own release config imports packages). |
+| `draft`                | `true`   | Create a draft GitHub release for the resolved version.                             |
+
+The workflow outputs `new-release-published`, `new-release-version`, `new-release-git-tag` and `new-release-notes`, which later jobs can use via `needs.release.outputs.*`.
+
 ## Configuration
 
 This shareable config is based on the [Conventional Commits preset](https://www.npmjs.com/package/conventional-changelog-conventionalcommits), with the following changes:

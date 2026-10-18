@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: The Node.js version used to run semantic-release.
+        type: string
+        default: "lts/*"
+      config-version:
+        description: The version of `@owenvoke/semantic-release-config` to use.
+        type: string
+        default: "latest"
+      install-dependencies:
+        description: Run `npm ci` in the repository before resolving the version (needed when the repository's own release config imports local packages).
+        type: boolean
+        default: false
+      draft:
+        description: Create a draft GitHub release for the resolved version.
+        type: boolean
+        default: true
+    outputs:
+      new-release-published:
+        description: Whether a new release would be published.
+        value: ${{ jobs.resolve-version.outputs.new-release-published }}
+      new-release-version:
+        description: The version of the new release.
+        value: ${{ jobs.resolve-version.outputs.new-release-version }}
+      new-release-git-tag:
+        description: The Git tag of the new release.
+        value: ${{ jobs.resolve-version.outputs.new-release-git-tag }}
+      new-release-notes:
+        description: The release notes of the new release.
+        value: ${{ jobs.resolve-version.outputs.new-release-notes }}
+
+jobs:
+  resolve-version:
+    name: Resolve
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      new-release-published: ${{ steps.get-next-version.outputs.new-release-published }}
+      new-release-version: ${{ steps.get-next-version.outputs.new-release-version }}
+      new-release-git-tag: ${{ steps.get-next-version.outputs.new-release-git-tag }}
+      new-release-notes: ${{ steps.get-next-version.outputs.new-release-notes }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install dependencies
+        if: inputs.install-dependencies
+        run: npm ci
+
+      - name: Install semantic-release
+        env:
+          CONFIG_VERSION: ${{ inputs.config-version }}
+        run: |
+          npm install \
+            --prefix "$RUNNER_TEMP/semantic-release" \
+            --no-save \
+            --no-audit \
+            --no-fund \
+            semantic-release \
+            "@owenvoke/semantic-release-config@$CONFIG_VERSION"
+
+      - name: Resolve version
+        id: get-next-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          "$RUNNER_TEMP/semantic-release/node_modules/.bin/semantic-release" \
+            --dry-run \
+            --extends "$RUNNER_TEMP/semantic-release/node_modules/@owenvoke/semantic-release-config/.releaserc.mjs"
+
+  release-draft:
+    name: Draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: [resolve-version]
+    if: inputs.draft && needs.resolve-version.outputs.new-release-published == 'true'
+    steps:
+
+      - name: Remove old draft releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          gh api --paginate "repos/$REPOSITORY/releases" \
+            --jq '.[] | select(.draft == true) | .id' \
+            | xargs -I '{}' gh api -X DELETE "repos/$REPOSITORY/releases/{}"
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        with:
+          tag_name: ${{ needs.resolve-version.outputs.new-release-git-tag }}
+          target_commitish: ${{ github.sha }}
+          draft: true
+          prerelease: ${{ startsWith(needs.resolve-version.outputs.new-release-version, '0.') }}
+          body: |
+            ${{ needs.resolve-version.outputs.new-release-notes }}
