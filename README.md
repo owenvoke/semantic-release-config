@@ -49,12 +49,13 @@ To lock to a specific version, replace `@main` with a release tag (e.g. `@v1.3.0
 
 Publishing the draft release creates the tag, which can then trigger any publishing workflows (e.g. `on: release: types: [published]`).
 
-| Input                  | Default  | Description                                                                         |
-|------------------------|----------|-------------------------------------------------------------------------------------|
-| `node-version`         | `lts/*`  | The Node.js version used to run `semantic-release`.                                 |
-| `config-version`       | `latest` | The version of `@owenvoke/semantic-release-config` to use.                          |
-| `install-dependencies` | `false`  | Run `npm ci` first (needed if the repository's own release config imports packages). |
-| `draft`                | `true`   | Create a draft GitHub release for the resolved version.                             |
+| Input                      | Default  | Description                                                                          |
+|----------------------------|----------|--------------------------------------------------------------------------------------|
+| `node-version`             | `lts/*`  | The Node.js version used to run `semantic-release`.                                  |
+| `semantic-release-version` | `25`     | The version of `semantic-release` to use.                                            |
+| `config-version`           | `latest` | The version of `@owenvoke/semantic-release-config` to use.                           |
+| `install-dependencies`     | `false`  | Run `npm ci` first (needed if the repository's own release config imports packages). |
+| `draft`                    | `true`   | Create a draft GitHub release for the resolved version.                              |
 
 The workflow outputs `new-release-published`, `new-release-version`, `new-release-git-tag` and `new-release-notes`, which later jobs can use via `needs.release.outputs.*`.
 

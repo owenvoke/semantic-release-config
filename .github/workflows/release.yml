@@ -7,6 +7,10 @@ on:
         description: The Node.js version used to run semantic-release.
         type: string
         default: "lts/*"
+      semantic-release-version:
+        description: The version of `semantic-release` to use.
+        type: string
+        default: "25"
       config-version:
         description: The version of `@owenvoke/semantic-release-config` to use.
         type: string
@@ -62,6 +66,7 @@ jobs:
 
       - name: Install semantic-release
         env:
+          SEMANTIC_RELEASE_VERSION: ${{ inputs.semantic-release-version }}
           CONFIG_VERSION: ${{ inputs.config-version }}
         run: |
           npm install \
@@ -69,7 +74,7 @@ jobs:
             --no-save \
             --no-audit \
             --no-fund \
-            semantic-release \
+            "semantic-release@$SEMANTIC_RELEASE_VERSION" \
             "@owenvoke/semantic-release-config@$CONFIG_VERSION"
 
       - name: Resolve version
